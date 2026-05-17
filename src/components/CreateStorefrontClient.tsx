@@ -323,7 +323,7 @@ function ProductRetrievalCards({
 }
 
 export function CreateStorefrontClient() {
-  const [vibe, setVibe] = useState<string>(DEMO_SAMPLE_VIBES[0]);
+  const [vibe, setVibe] = useState<string>("");
   const [result, setResult] = useState<GenerateResponse | null>(null);
   const [error, setError] = useState<GenerateErrorPayload | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
@@ -463,11 +463,11 @@ export function CreateStorefrontClient() {
             <div className="field vibe-field">
               <label htmlFor="vibe">Vibe</label>
               <input
+                autoFocus
                 id="vibe"
                 maxLength={160}
                 name="vibe"
                 onChange={(event) => updateVibe(event.target.value)}
-                placeholder="Pokemon style cute birthday"
                 required
                 type="text"
                 value={vibe}
