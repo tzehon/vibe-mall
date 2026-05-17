@@ -8,7 +8,7 @@ const { loadEnvConfig } = nextEnv;
 
 loadEnvConfig(process.cwd());
 
-const CONFIRM_TOKEN = "reset-vibe-mall";
+const CONFIRM_TOKEN = "reset-trend-mall";
 const APP_COLLECTIONS = ["storefronts", "products", "users", "sessions"] as const;
 const PROTECTED_DATABASES = new Set(["admin", "config", "local"]);
 
@@ -30,7 +30,7 @@ function readConfirmToken() {
     return args[confirmIndex + 1];
   }
 
-  return process.env.VIBE_MALL_TEARDOWN_CONFIRM;
+  return process.env.TREND_MALL_TEARDOWN_CONFIRM;
 }
 
 function isConfirmed() {
@@ -43,7 +43,7 @@ function shouldSkipSearchIndex() {
 
 function printUsage(dbName?: string) {
   console.log("");
-  console.log("Vibe Mall teardown is guarded because it deletes demo data.");
+  console.log("Trend Mall teardown is guarded because it deletes demo data.");
 
   if (dbName) {
     console.log(`Target database: ${dbName}`);
@@ -135,7 +135,7 @@ async function main() {
   const db = client.db(dbName);
 
   try {
-    console.log(`Tearing down Vibe Mall demo data in database ${dbName}.`);
+    console.log(`Tearing down Trend Mall demo data in database ${dbName}.`);
 
     if (shouldSkipSearchIndex()) {
       console.log(`Search index ${PRODUCT_VECTOR_INDEX_NAME}: skipped.`);
@@ -148,7 +148,7 @@ async function main() {
     }
 
     console.log("");
-    console.log("Vibe Mall teardown complete.");
+    console.log("Trend Mall teardown complete.");
     console.log("Start fresh with:");
     console.log("  npm run seed");
   } finally {

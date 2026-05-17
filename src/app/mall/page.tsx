@@ -35,7 +35,7 @@ function StorefrontCards({
         description={emptyDescription}
         action={
           <Link className="button secondary" href="/create">
-            Start from a vibe
+            Start from a trend
           </Link>
         }
       />
@@ -54,7 +54,7 @@ function StorefrontCards({
             <span>{storefront.productCount} products</span>
           </div>
           <h2>{storefront.title}</h2>
-          <p>{storefront.vibe}</p>
+          <p>{storefront.trend}</p>
           <div className="mall-card-dates">
             <span>Created {formatDate(storefront.createdAt)}</span>
             {storefront.status === "published" ? (
@@ -92,7 +92,7 @@ export default async function MallPage() {
       <section className="mall-hero">
         <div>
           <p className="eyebrow">Public Mall</p>
-          <h1>Storefronts that started as vibes.</h1>
+          <h1>Storefronts that started as trends.</h1>
           <p className="lede">
             Published shelves appear here as social-shareable campaigns.
             Private drafts stay in the merchant workspace until they are ready.
@@ -136,7 +136,7 @@ export default async function MallPage() {
               storefronts={myDrafts}
               variant="owner"
               emptyTitle="No private drafts."
-              emptyDescription="Generate a vibe storefront and the draft will appear here before publishing."
+              emptyDescription="Generate a trend storefront and the draft will appear here before publishing."
             />
           </section>
           {myPublished.length > 0 ? (

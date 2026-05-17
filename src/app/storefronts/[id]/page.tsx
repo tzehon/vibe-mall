@@ -83,8 +83,8 @@ export default async function StorefrontPage({ params }: StorefrontPageProps) {
           </div>
           <div className="storefront-meta-grid">
             <div>
-              <span>Vibe</span>
-              <strong>{storefront.vibe}</strong>
+              <span>Trend</span>
+              <strong>{storefront.trend}</strong>
             </div>
             <div>
               <span>Generated</span>

@@ -6,7 +6,7 @@ export function AssemblyLine() {
       <div className="section-heading">
         <p className="eyebrow">AI Assembly Line</p>
         <h2 id="assembly-line-title">
-          Type a vibe. We find the products. Codex writes the storefront.
+          Type a trend. We find the products. Codex writes the storefront.
           Publish it to the Mall.
         </h2>
       </div>

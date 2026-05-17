@@ -1,17 +1,18 @@
-# Vibe Mall Implementation Plan
+# Trend Mall Implementation Plan
 
 ## Product Goal
 
-Build **Vibe Mall**, a polished minimal end-to-end hackathon demo for an OpenAI customer that runs a major eCommerce platform.
+Build **Trend Mall**, a polished minimal end-to-end hackathon demo for an OpenAI customer that runs a major eCommerce platform.
 
-Vibe Mall lets a logged-in shopper type a vibe, retrieves matching products from MongoDB Atlas Vector Search using Atlas Automated Embedding with `voyage-4`, calls the Codex SDK server-side to generate a themed storefront, renders the generated HTML in a sandboxed iframe, and lets the user publish a shareable Mall URL.
+Trend Mall lets a logged-in shopper type a trend, retrieves matching products from MongoDB Atlas Vector Search using Atlas Automated Embedding with `voyage-4`, calls the Codex SDK server-side to generate a themed storefront, renders the generated HTML in a sandboxed iframe, and lets the user publish a shareable Mall URL.
 
 ## Current Status
 
 - Milestones 1 through 8 are complete.
-- The app root is `/Users/tth/projects/vibe-mall`; do not create a nested project directory.
+- The current workspace folder is the app root; do not create a nested project directory.
 - The app uses Next.js App Router, TypeScript, MongoDB Node driver, simple credentials auth, Vitest, and Playwright.
 - Codex generation, draft iframe preview, publishing, public share URLs, demo-polish UI, hardening tests, and browser smoke tests are implemented.
+- Product terminology has been updated from trend prompt through data model, API payloads, docs, tests, and demo copy.
 
 ## Core Requirements
 
@@ -48,7 +49,7 @@ Vibe Mall lets a logged-in shopper type a vibe, retrieves matching products from
 - UI components: `src/components/CreateStorefrontClient.tsx`, `src/components/StorefrontPreview.tsx`, `src/components/PublishStorefrontPanel.tsx`, `src/components/SiteHeader.tsx`.
 - Core libraries: `src/lib/auth.ts`, `src/lib/session.ts`, `src/lib/productSearch.ts`, `src/lib/storefronts.ts`, `src/lib/htmlSafety.ts`, `src/lib/codex/generateStorefrontHtml.ts`, `src/lib/codex/prompt.ts`.
 - Seed and Atlas scripts: `src/scripts/seed.ts`, `src/scripts/create-atlas-vector-index.ts`, `src/scripts/teardown.ts`.
-- E2E: `e2e/vibe-mall.spec.ts`.
+- E2E: `e2e/trend-mall.spec.ts`.
 
 ## Data Model
 
@@ -96,7 +97,7 @@ Important constraint: do not store application-generated embeddings, call embedd
 {
   _id: ObjectId;
   ownerId: ObjectId;
-  vibe: string;
+  trend: string;
   title: string;
   slug: string;
   productIds: ObjectId[];
@@ -133,7 +134,7 @@ ATLAS_SEARCH_INDEX_NAME=products_voyage4_autoembed
 
 - `/` - polished demo home page with product concept, proof points, and AI Assembly Line.
 - `/login` - credentials login with demo merchant account buttons.
-- `/create` - protected vibe composer that retrieves products, streams Codex generation updates, previews the sandboxed draft, and publishes.
+- `/create` - protected trend composer that retrieves products, streams Codex generation updates, previews the sandboxed draft, and publishes.
 - `/mall` - public gallery of published storefronts plus signed-in user shelves.
 - `/storefronts/[id]` - public published storefront page or owner-only draft details page.
 - `/storefronts/[id]/embed` - authorized `text/html` response containing generated HTML for iframe rendering.
@@ -159,7 +160,7 @@ ATLAS_SEARCH_INDEX_NAME=products_voyage4_autoembed
 ## Completed Implementation Notes
 
 - The app uses the current folder as the root and keeps all generated code in the existing Next.js project.
-- Product seed data contains 420 deterministic products with data-URI SVG artwork and sample-vibe-aligned search text.
+- Product seed data contains 420 deterministic products with data-URI SVG artwork and sample-trend-aligned search text.
 - `npm run seed` seeds MongoDB data and invokes the shared Atlas Vector Search index helper.
 - The Atlas search helper uses `$vectorSearch` with text query input, score projection, active filtering, normalized results, and no `queryVector`.
 - A clearly labeled fallback path exists for `CODEX_DEMO_MODE=true` so local tests and emergency demos do not call live Codex.
@@ -224,20 +225,21 @@ http://localhost:3000
 - Unit test owner-only storefront access and public/private visibility rules.
 - Unit test Codex generation route with Codex mocked or demo mode enabled.
 - Unit test product search query construction to prove the app uses Atlas text auto-embedding instead of app-generated vectors.
-- Unit test seed data for category coverage, SVG data URIs, rich search text, deterministic output, and sample-vibe alignment.
+- Unit test seed data for category coverage, SVG data URIs, rich search text, deterministic output, and sample-trend alignment.
 - Unit test HTML safety and sandbox/CSP boundaries.
 - Source-boundary tests ensure the Codex SDK import stays server-side, client components do not read secrets, React does not use `dangerouslySetInnerHTML`, and iframe sandbox attributes remain restrictive.
 - Playwright smoke tests cover login, generation, sandboxed iframe preview, publish, and anonymous public share viewing.
+- The Playwright seeded smoke test now upserts the two demo merchants before login so a reset users collection does not break the browser flow, while still requiring seeded products and the Atlas Search index.
 
 ## Latest Validation Summary
 
+- `npm run typecheck`: passed.
 - `npm test`: passed with 14 test files and 58 tests.
 - `npm run lint`: passed.
 - `npm run build`: passed with Next.js production compile and 10 static pages generated.
-- Previous `npm run typecheck`: passed.
-- `npm run test:e2e`: passed with 2 Playwright tests after local server/browser setup.
-- `npm run seed`: passed against Atlas after the latest product artwork updates; the Atlas Vector Search index was queryable.
-- Read-only Atlas spot check confirmed noun-specific SVG artwork for a representative product.
+- `npm run test:e2e`: passed with 2 Playwright tests.
+- Terminology scan: no tracked app, test, docs, public, README, plan, package, or agent files still contain the previous product term.
+- `npm run seed`: not rerun in this pass.
 
 ## Decision Log
 
@@ -257,7 +259,8 @@ http://localhost:3000
 - Use stable slugs for public share URLs and preserve the slug during publishing.
 - Return `no-store` for draft embeds and public cache headers for published embeds.
 - Use data-URI SVG product images for reliable demos.
-- Keep teardown guarded by `--confirm reset-vibe-mall` and scoped to known app collections plus the search index.
-- Keep suggested sample vibe chips and seed data coupled through tests.
+- Keep teardown guarded by `--confirm reset-trend-mall` and scoped to known app collections plus the search index.
+- Keep suggested sample trend chips and seed data coupled through tests.
+- Keep E2E demo-user hardening in the tracked Trend Mall spec so Playwright only runs the current storefront flow.
 - Keep multiple seeded merchant accounts visible on the login page for ownership demos.
 - Run Playwright against a controlled local Next dev server on `localhost:3100` with `CODEX_DEMO_MODE=true`.

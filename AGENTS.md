@@ -1,24 +1,24 @@
-# Vibe Mall Agent Guidance
+# Trend Mall Agent Guidance
 
 ## App Goal
 
-Build a polished minimal end-to-end hackathon demo called **Vibe Mall** for an OpenAI customer that runs a major eCommerce platform.
+Build a polished minimal end-to-end hackathon demo called **Trend Mall** for an OpenAI customer that runs a major eCommerce platform.
 
-Vibe Mall is a storefront that codes itself: a shopper types a vibe such as `Pokemon style cute birthday`, the app retrieves semantically matching products, asks Codex server-side to generate a themed storefront, renders the generated HTML safely, and lets the authenticated user publish and share it.
+Trend Mall is a storefront that codes itself: a shopper types a trend such as `No wires clean desk refresh`, the app retrieves semantically matching products, asks Codex server-side to generate a themed storefront, renders the generated HTML safely, and lets the authenticated user publish and share it.
 
 ## Product Concept
 
 The core user flow is:
 
 1. User logs in.
-2. User enters a shopping vibe.
+2. User enters a shopping trend.
 3. Server runs MongoDB Atlas Vector Search over a seeded product catalog.
 4. Atlas uses Automated Embedding with `voyage-4`; the app must not generate embeddings itself.
-5. Server calls Codex SDK or Codex as an MCP server with the vibe and retrieved products.
+5. Server calls Codex SDK or Codex as an MCP server with the trend and retrieved products.
 6. Codex returns one self-contained themed HTML storefront.
 7. App renders the generated HTML only in a sandboxed iframe.
 8. User publishes the storefront to the Mall.
-9. App saves the vibe, selected products, generated HTML, owner, and public share slug in MongoDB Atlas.
+9. App saves the trend, selected products, generated HTML, owner, and public share slug in MongoDB Atlas.
 10. Public visitors can open the shareable storefront URL.
 
 ## Non-Negotiable Requirements
@@ -37,7 +37,7 @@ The core user flow is:
 ## Architecture Constraints
 
 - Preferred stack: Next.js App Router, TypeScript, MongoDB Node driver.
-- The current folder is the app root. Do not create a nested `vibe-mall` directory.
+- The current folder is the app root. Do not create a nested `trend-mall` directory.
 - Keep Codex calls server-side only. Do not expose Codex credentials to the browser.
 - Keep MongoDB access server-side only except through app routes or server actions.
 - Use simple credentials login for hackathon reliability.
@@ -67,7 +67,7 @@ The core user flow is:
 ## Codex Inside-App Constraint
 
 - The app must include a server-side generation route that calls Codex SDK or Codex as an MCP server at runtime.
-- Codex input should include the user's vibe and a bounded list of retrieved product records.
+- Codex input should include the user's trend and a bounded list of retrieved product records.
 - Codex output should be constrained to a single complete HTML document or HTML fragment that is self-contained and safe to iframe.
 - The generation route should persist the generation result under the authenticated user after successful creation or publish, depending on the final UX.
 
@@ -111,7 +111,7 @@ The demo is done when:
 - A user can log in with reliable demo credentials.
 - Seeded products exist in MongoDB Atlas with reliable data-URI SVG images.
 - Atlas Vector Search retrieves products through Automated Embedding using `autoEmbed` and `voyage-4`.
-- The running app calls Codex server-side to generate a themed storefront from a vibe and retrieved products.
+- The running app calls Codex server-side to generate a themed storefront from a trend and retrieved products.
 - Generated HTML is rendered only in a sandboxed iframe.
 - Authenticated users can save/publish generated storefronts.
 - Published storefronts have public shareable URLs.

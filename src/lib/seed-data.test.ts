@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { DEMO_SAMPLE_VIBES } from "./demoMetadata";
+import { DEMO_SAMPLE_TRENDS } from "./demoMetadata";
 import { buildSeedProducts, DEMO_USERS, seedDataFingerprint } from "./seed-data";
 
 function normalizeSearchText(value: string) {
@@ -82,23 +82,23 @@ describe("buildSeedProducts", () => {
     expect(product.searchText).toContain("Occasion:");
     expect(product.searchText).toContain("Materials and finish:");
     expect(product.searchText).toContain("Customer intent:");
-    expect(product.searchText).toContain("Social vibe:");
+    expect(product.searchText).toContain("Social trend:");
   });
 
-  it("aligns seeded products with every suggested sample vibe chip", () => {
+  it("aligns seeded products with every suggested sample trend chip", () => {
     const products = buildSeedProducts();
 
-    for (const vibe of DEMO_SAMPLE_VIBES) {
+    for (const trend of DEMO_SAMPLE_TRENDS) {
       const matches = products.filter((product) =>
-        product.searchText.includes(`Suggested chip match: ${vibe}`)
+        product.searchText.includes(`Suggested chip match: ${trend}`)
       );
-      const vibeTokens = normalizeSearchText(vibe)
+      const trendTokens = normalizeSearchText(trend)
         .split(" ")
         .filter((token) => token.length > 3);
       const visibleMatches = matches.filter((product) => {
         const visibleProductText = normalizeSearchText(`${product.name} ${product.tags.join(" ")}`);
 
-        return vibeTokens.some((token) => visibleProductText.includes(token));
+        return trendTokens.some((token) => visibleProductText.includes(token));
       });
 
       expect(matches.length).toBeGreaterThanOrEqual(20);

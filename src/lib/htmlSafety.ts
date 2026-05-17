@@ -137,7 +137,7 @@ function containsProductPrice(html: string, price: number) {
 export function validateGeneratedStorefrontHtml({
   html,
   products,
-  fallbackTitle = "Vibe Mall storefront"
+  fallbackTitle = "Trend Mall storefront"
 }: {
   html: string;
   products: StorefrontPromptProduct[];

@@ -15,7 +15,7 @@ function storefront(status: Storefront["status"]): Storefront {
   return {
     _id: new ObjectId("507f1f77bcf86cd799439013"),
     ownerId,
-    vibe: "Pokemon style cute birthday",
+    trend: "Pokemon style cute birthday",
     title: "Birthday Shelf",
     slug: "birthday-shelf",
     productIds: [],
@@ -95,7 +95,7 @@ describe("GET /storefronts/[id]/embed", () => {
   it("serves owner-only draft embeds without caching", async () => {
     const ownerUser: AuthUser = {
       _id: ownerId.toHexString(),
-      email: "demo@vibemall.local",
+      email: "demo@trendmall.local",
       name: "Demo Merchant"
     };
     const { GET } = await importRouteWithStorefront(storefront("draft"), ownerUser);

@@ -1,8 +1,8 @@
-export const PRODUCT_VECTOR_INDEX_NAME = "product_vibe_autoembed";
+export const PRODUCT_VECTOR_INDEX_NAME = "product_trend_autoembed";
 export const PRODUCT_SEARCH_PATH = "searchText";
 export const PRODUCT_AUTO_EMBEDDING_MODEL = "voyage-4";
 
-export const DEMO_SAMPLE_VIBES = [
+export const DEMO_SAMPLE_TRENDS = [
   "Pokemon style cute birthday",
   "No wires clean desk refresh",
   "Quiet luxury winterwear",
@@ -12,9 +12,9 @@ export const DEMO_SAMPLE_VIBES = [
 
 export const GENERATION_TIMELINE_STEPS = [
   {
-    idle: "Search the database for the vibe space",
-    active: "Database searching the vibe space",
-    complete: "Database searched the vibe space"
+    idle: "Search the database for the trend space",
+    active: "Database searching the trend space",
+    complete: "Database searched the trend space"
   },
   {
     idle: "Match products through semantic search",
@@ -54,7 +54,7 @@ export type GenerationErrorCode =
   | "unknown";
 
 export type TechnicalMetadataInput = {
-  vibe: string;
+  trend: string;
   productCount: number | null;
   fallbackUsed: boolean | null;
   htmlSafety: "not-run" | "running" | "passed" | "failed";
@@ -92,8 +92,8 @@ export function formatHtmlSafety(value: TechnicalMetadataInput["htmlSafety"]) {
 export function buildTechnicalMetadata(input: TechnicalMetadataInput) {
   return [
     {
-      label: "Vibe text",
-      value: input.vibe.trim() || "Waiting for a vibe"
+      label: "Trend text",
+      value: input.trend.trim() || "Waiting for a trend"
     },
     {
       label: "Atlas index name",
@@ -149,7 +149,7 @@ export function getGenerationErrorCopy(
       return {
         title: "No products matched",
         description:
-          "Atlas finished the search but did not return usable products for this vibe.",
+          "Atlas finished the search but did not return usable products for this trend.",
         recovery: "Try a more concrete mood, occasion, category, or style cue."
       };
     case "atlas_unavailable":
@@ -158,7 +158,7 @@ export function getGenerationErrorCopy(
         description:
           "The product search step could not reach the Atlas Vector Search index or the index is not ready.",
         recovery:
-          "Confirm the product_vibe_autoembed index exists with voyage-4 autoEmbed, then try again."
+          "Confirm the product_trend_autoembed index exists with voyage-4 autoEmbed, then try again."
       };
     case "codex_failed":
       return {
@@ -172,7 +172,7 @@ export function getGenerationErrorCopy(
         title: "Code safety checks failed",
         description:
           "Codex returned code that did not satisfy the sandbox rules or omitted selected product data.",
-        recovery: "Retry the same vibe or make it more specific so Codex can produce a compliant storefront."
+        recovery: "Retry the same trend or make it more specific so Codex can produce a compliant storefront."
       };
     case "mongodb_unavailable":
       return {
@@ -183,7 +183,7 @@ export function getGenerationErrorCopy(
       };
     case "invalid_request":
       return {
-        title: "Vibe needs a little more detail",
+        title: "Trend needs a little more detail",
         description: fallbackMessage,
         recovery: "Use a short phrase with a mood, occasion, or shopping intent."
       };

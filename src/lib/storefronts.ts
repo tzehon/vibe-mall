@@ -7,7 +7,7 @@ import type { Storefront } from "./models";
 export type StorefrontCard = {
   _id: string;
   ownerId: string;
-  vibe: string;
+  trend: string;
   title: string;
   slug: string;
   status: Storefront["status"];
@@ -31,7 +31,7 @@ function toStorefrontCard(storefront: Storefront): StorefrontCard {
   return {
     _id: storefront._id.toHexString(),
     ownerId: storefront.ownerId.toHexString(),
-    vibe: storefront.vibe,
+    trend: storefront.trend,
     title: storefront.title,
     slug: storefront.slug,
     status: storefront.status,

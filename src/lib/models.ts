@@ -42,7 +42,7 @@ export const productSchema = productSnapshotSchema.extend({
 export const storefrontSchema = z.object({
   _id: z.instanceof(ObjectId),
   ownerId: z.instanceof(ObjectId),
-  vibe: z.string().min(1),
+  trend: z.string().min(1),
   title: z.string().min(1),
   slug: z.string().min(1),
   productIds: z.array(z.instanceof(ObjectId)),

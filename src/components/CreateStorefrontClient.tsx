@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
 import {
-  DEMO_SAMPLE_VIBES,
+  DEMO_SAMPLE_TRENDS,
   GENERATION_TIMELINE_STEPS,
   getGenerationErrorCopy,
   type GenerationErrorCode
@@ -29,7 +29,7 @@ type GeneratedProduct = {
 type GenerateResponse = {
   storefrontId: string;
   title: string;
-  vibe: string;
+  trend: string;
   products: GeneratedProduct[];
   search: {
     mode: "atlas-auto-embedding" | "demo-fallback";
@@ -76,7 +76,7 @@ type GenerateStreamEvent =
     };
 
 const WAITING_CODE_FLAVOR_TEXT = [
-  "Measuring the vibe against the product shelf. Tiny tape measure, serious intent.",
+  "Measuring the trend against the product shelf. Tiny tape measure, serious intent.",
   "Codex is picking a layout that will not embarrass the merchandise.",
   "Turning product JSON into something a shopper might actually scroll.",
   "Checking that the campaign has main-character energy and zero checkout liability.",
@@ -121,7 +121,7 @@ function endlessRunnerFrame(frameIndex: number) {
   const score = String((frameIndex + 1) * 37).padStart(6, "0");
   const frame = WAITING_CODE_ASCII_FRAMES[frameIndex % WAITING_CODE_ASCII_FRAMES.length];
 
-  return `VIBE RUNNER  SCORE ${score}\n${frame}`;
+  return `TREND RUNNER  SCORE ${score}\n${frame}`;
 }
 
 function formatPrice(price: number) {
@@ -323,7 +323,7 @@ function ProductRetrievalCards({
 }
 
 export function CreateStorefrontClient() {
-  const [vibe, setVibe] = useState<string>("");
+  const [trend, setTrend] = useState<string>("");
   const [result, setResult] = useState<GenerateResponse | null>(null);
   const [error, setError] = useState<GenerateErrorPayload | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
@@ -351,10 +351,10 @@ export function CreateStorefrontClient() {
               WAITING_CODE_FLAVOR_TEXT.length
           ]
         }`
-      : "Submit a vibe to stream the generated code here.");
+      : "Submit a trend to stream the generated code here.");
 
-  function updateVibe(nextVibe: string) {
-    setVibe(nextVibe);
+  function updateTrend(nextTrend: string) {
+    setTrend(nextTrend);
     setResult(null);
     setError(null);
   }
@@ -396,7 +396,7 @@ export function CreateStorefrontClient() {
           accept: "text/event-stream",
           "content-type": "application/json"
         },
-        body: JSON.stringify({ vibe })
+        body: JSON.stringify({ trend })
       });
       const contentType = response.headers.get("content-type") ?? "";
 
@@ -453,34 +453,34 @@ export function CreateStorefrontClient() {
       <section className="create-main">
         <div className="create-command panel">
           <p className="eyebrow">Create</p>
-          <h1>Build the shelf from a vibe.</h1>
+          <h1>Build the shelf from a trend.</h1>
           <p className="lede">
             The app searches the catalog semantically, hands product JSON to
             Codex SDK, validates the generated code, then saves a draft that can
             be published to the Mall.
           </p>
           <form className="form-grid" onSubmit={handleSubmit}>
-            <div className="field vibe-field">
-              <label htmlFor="vibe">Vibe</label>
+            <div className="field trend-field">
+              <label htmlFor="trend">Trend</label>
               <input
                 autoFocus
-                id="vibe"
+                id="trend"
                 maxLength={160}
-                name="vibe"
-                onChange={(event) => updateVibe(event.target.value)}
+                name="trend"
+                onChange={(event) => updateTrend(event.target.value)}
                 required
                 type="text"
-                value={vibe}
+                value={trend}
               />
             </div>
             <div>
               <p className="eyebrow">What&apos;s trending</p>
-              <div className="chips" aria-label="Sample vibe prompts">
-                {DEMO_SAMPLE_VIBES.map((sample) => (
+              <div className="chips" aria-label="Sample trend prompts">
+                {DEMO_SAMPLE_TRENDS.map((sample) => (
                   <button
                     className="chip chip-button"
                     key={sample}
-                    onClick={() => updateVibe(sample)}
+                    onClick={() => updateTrend(sample)}
                     type="button"
                   >
                     {sample}
@@ -497,7 +497,7 @@ export function CreateStorefrontClient() {
         <div className="generation-timeline panel" aria-live="polite">
           <div className="timeline-heading">
             <p className="eyebrow">Generation timeline</p>
-            <h2>From vibe to publishable code</h2>
+            <h2>From trend to publishable code</h2>
           </div>
           <ol className="timeline-list">
             {GENERATION_TIMELINE_STEPS.map((step, index) => {
@@ -528,8 +528,8 @@ export function CreateStorefrontClient() {
         {result ? (
           <div className="launch-reveal" aria-label="Generated storefront reveal">
             <div>
-              <p className="eyebrow">Vibe locked</p>
-              <strong>{result.vibe}</strong>
+              <p className="eyebrow">Trend locked</p>
+              <strong>{result.trend}</strong>
             </div>
             <div>
               <p className="eyebrow">Shelf live</p>
@@ -561,7 +561,7 @@ export function CreateStorefrontClient() {
               <span />
               <span />
             </span>
-            <span className="terminal-path">~/vibe-mall/generated-code</span>
+            <span className="terminal-path">~/trend-mall/generated-code</span>
             <span className="terminal-status">{codeStreamState}</span>
           </div>
           <pre
@@ -597,7 +597,7 @@ export function CreateStorefrontClient() {
           <div className="retrieval-heading">
             <div>
               <p className="eyebrow">Retrieved products</p>
-              <h2>{result.products.length} products matched the vibe</h2>
+              <h2>{result.products.length} products matched the trend</h2>
             </div>
             {result.search.usedFallback ? (
               <span className="fallback-banner">Using deterministic fallback search</span>

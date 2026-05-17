@@ -32,7 +32,7 @@ async function main() {
   const products = buildSeedProducts();
   const fingerprint = seedDataFingerprint(products);
 
-  console.log(`Prepared ${products.length} Vibe Mall products.`);
+  console.log(`Prepared ${products.length} Trend Mall products.`);
   console.log(`Seed fingerprint: ${fingerprint}`);
 
   if (!hasMongoEnv()) {

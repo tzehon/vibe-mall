@@ -1,14 +1,14 @@
 import { createHash } from "node:crypto";
 
-import { DEMO_SAMPLE_VIBES } from "./demoMetadata";
+import { DEMO_SAMPLE_TRENDS } from "./demoMetadata";
 import type { Product, ProductCategory } from "./models";
 import { hashPassword } from "./passwords";
 
-export const DEMO_USER_EMAIL = "demo@vibemall.local";
-export const DEMO_USER_PASSWORD = "vibe-mall-demo";
+export const DEMO_USER_EMAIL = "demo@trendmall.local";
+export const DEMO_USER_PASSWORD = "trend-mall-demo";
 export const DEMO_USER_NAME = "Demo Merchant";
-export const SECOND_DEMO_USER_EMAIL = "second@vibemall.local";
-export const SECOND_DEMO_USER_PASSWORD = "vibe-mall-second";
+export const SECOND_DEMO_USER_EMAIL = "second@trendmall.local";
+export const SECOND_DEMO_USER_PASSWORD = "trend-mall-second";
 export const SECOND_DEMO_USER_NAME = "Second Merchant";
 
 export const DEMO_USERS = [
@@ -44,7 +44,7 @@ type CategoryConfig = {
 };
 
 type DemoChipSeed = {
-  vibe: (typeof DEMO_SAMPLE_VIBES)[number];
+  trend: (typeof DEMO_SAMPLE_TRENDS)[number];
   namePrefix: string;
   tags: string[];
   searchPhrases: string[];
@@ -136,7 +136,7 @@ const occasions = [
   "holiday surprise"
 ];
 
-const socialVibes = [
+const socialTrends = [
   "TikTok haul",
   "group chat approved",
   "creator desk tour",
@@ -151,7 +151,7 @@ const socialVibes = [
 
 const demoChipSeeds: DemoChipSeed[] = [
   {
-    vibe: DEMO_SAMPLE_VIBES[0],
+    trend: DEMO_SAMPLE_TRENDS[0],
     namePrefix: "kawaii character birthday",
     tags: [
       "pokemon-inspired",
@@ -170,7 +170,7 @@ const demoChipSeeds: DemoChipSeed[] = [
     ]
   },
   {
-    vibe: DEMO_SAMPLE_VIBES[1],
+    trend: DEMO_SAMPLE_TRENDS[1],
     namePrefix: "wire-free clean desk",
     tags: [
       "no wires",
@@ -189,7 +189,7 @@ const demoChipSeeds: DemoChipSeed[] = [
     ]
   },
   {
-    vibe: DEMO_SAMPLE_VIBES[2],
+    trend: DEMO_SAMPLE_TRENDS[2],
     namePrefix: "quiet luxury winter",
     tags: [
       "quiet luxury",
@@ -208,7 +208,7 @@ const demoChipSeeds: DemoChipSeed[] = [
     ]
   },
   {
-    vibe: DEMO_SAMPLE_VIBES[3],
+    trend: DEMO_SAMPLE_TRENDS[3],
     namePrefix: "rainy night gamer dorm",
     tags: [
       "neon",
@@ -227,7 +227,7 @@ const demoChipSeeds: DemoChipSeed[] = [
     ]
   },
   {
-    vibe: DEMO_SAMPLE_VIBES[4],
+    trend: DEMO_SAMPLE_TRENDS[4],
     namePrefix: "founder coffee run",
     tags: [
       "soft launch",
@@ -768,7 +768,7 @@ function svgDataUri(product: {
   const safeName = escapeXmlText(product.name);
   const safeNoun = escapeXmlText(product.noun);
   const safeDescription = escapeXmlText(
-    `${product.brand} ${product.category} product artwork for Vibe Mall.`
+    `${product.brand} ${product.category} product artwork for Trend Mall.`
   );
   const safeSku = escapeXmlText(product.sku);
   const artwork = itemArtwork({
@@ -836,7 +836,7 @@ function buildTags(input: {
   occasion: string;
   material: string;
   intent: string;
-  socialVibe: string;
+  socialTrend: string;
   palette: Palette;
 }) {
   return Array.from(
@@ -847,7 +847,7 @@ function buildTags(input: {
       input.occasion,
       input.material,
       input.intent,
-      input.socialVibe,
+      input.socialTrend,
       input.palette.name,
       ...input.palette.labels
     ])
@@ -856,7 +856,7 @@ function buildTags(input: {
 
 export function hashDemoPassword(password = DEMO_USER_PASSWORD, email = DEMO_USER_EMAIL) {
   return hashPassword(password, {
-    salt: `vibe-mall-demo-user:${email}`
+    salt: `trend-mall-demo-user:${email}`
   });
 }
 
@@ -868,13 +868,13 @@ export function buildSeedProducts(productsPerCategory = 60): Omit<Product, "_id"
       const mood = pick(moods, globalIndex);
       const style = pick(styles, globalIndex, categoryIndex);
       const occasion = pick(occasions, globalIndex, itemIndex);
-      const socialVibe = pick(socialVibes, globalIndex, categoryIndex * 2);
+      const socialTrend = pick(socialTrends, globalIndex, categoryIndex * 2);
       const material = pick(config.materials, itemIndex, categoryIndex);
       const intent = pick(config.intents, itemIndex, globalIndex);
       const noun = pick(config.nouns, itemIndex, categoryIndex);
       const brand = pick(config.brands, itemIndex, globalIndex);
       const demoChip = demoChipForIndex(globalIndex);
-      const sku = `VM-${config.skuPrefix}-${String(itemIndex + 1).padStart(3, "0")}`;
+      const sku = `TM-${config.skuPrefix}-${String(itemIndex + 1).padStart(3, "0")}`;
       const name = `${titleCase(demoChip.namePrefix)} ${titleCase(noun)}`;
       const baseTags = buildTags({
         category: config.category,
@@ -883,7 +883,7 @@ export function buildSeedProducts(productsPerCategory = 60): Omit<Product, "_id"
         occasion,
         material,
         intent,
-        socialVibe,
+        socialTrend,
         palette
       });
       const tags = Array.from(new Set([...baseTags, ...demoChip.tags]));
@@ -895,10 +895,10 @@ export function buildSeedProducts(productsPerCategory = 60): Omit<Product, "_id"
         `Materials and finish: ${material}`,
         `Colors: ${palette.labels.join(", ")} in the ${palette.name} palette`,
         `Customer intent: ${intent}`,
-        `Social vibe: ${socialVibe}`,
-        `Suggested chip match: ${demoChip.vibe}`,
+        `Social trend: ${socialTrend}`,
+        `Suggested chip match: ${demoChip.trend}`,
         `Suggested chip related terms: ${demoChip.searchPhrases.join(", ")}`,
-        `Useful for shoppers searching by vibe, theme, occasion, color story, room aesthetic, outfit idea, snack craving, or gift recipient`,
+        `Useful for shoppers searching by trend, theme, occasion, color story, room aesthetic, outfit idea, snack craving, or gift recipient`,
         `Tags: ${tags.join(", ")}`
       ].join(". ");
 

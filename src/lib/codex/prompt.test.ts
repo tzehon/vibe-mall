@@ -5,9 +5,9 @@ import type { ProductSearchResult } from "@/lib/productSearch";
 
 const product: ProductSearchResult = {
   _id: "507f1f77bcf86cd799439011",
-  sku: "VM-001",
+  sku: "TM-001",
   name: "Cloud Pop Birthday Hoodie",
-  brand: "Vibe Mall",
+  brand: "Trend Mall",
   category: "apparel",
   price: 42,
   palette: ["#ffccdd", "#3157a4"],
@@ -18,13 +18,13 @@ const product: ProductSearchResult = {
 };
 
 describe("buildCodexStorefrontPrompt", () => {
-  it("constrains Codex to one vibe-matched layout archetype", () => {
+  it("constrains Codex to one trend-matched layout archetype", () => {
     const prompt = buildCodexStorefrontPrompt({
-      vibe: "Pokemon style cute birthday",
+      trend: "Pokemon style cute birthday",
       products: [product]
     });
 
-    expect(prompt).toContain("Pick exactly one layout archetype based on the vibe");
+    expect(prompt).toContain("Pick exactly one layout archetype based on the trend");
     expect(prompt).toContain("magazine spread");
     expect(prompt).toContain("toy catalog");
     expect(prompt).toContain("luxury drop");
@@ -36,7 +36,7 @@ describe("buildCodexStorefrontPrompt", () => {
 
   it("prevents checkout CTA animation from overlapping copy", () => {
     const prompt = buildCodexStorefrontPrompt({
-      vibe: "Pokemon style cute birthday",
+      trend: "Pokemon style cute birthday",
       products: [product]
     });
 

@@ -7,7 +7,7 @@ import { generateStorefrontHtmlWithCodex } from "@/lib/codex/generateStorefrontH
 import { CODEX_PRODUCT_LIMIT } from "@/lib/generationConfig";
 import { getDb } from "@/lib/mongodb";
 import type { ProductSnapshot, Storefront } from "@/lib/models";
-import { searchProductsByVibe } from "@/lib/productSearch";
+import { searchProductsByTrend } from "@/lib/productSearch";
 import type { ProductSearchResult } from "@/lib/productSearch";
 import { validateGeneratedStorefrontHtml } from "@/lib/htmlSafety";
 import type { GenerationErrorCode } from "@/lib/demoMetadata";
@@ -15,15 +15,15 @@ import type { GenerationErrorCode } from "@/lib/demoMetadata";
 export const runtime = "nodejs";
 
 const generateRequestSchema = z.object({
-  vibe: z.string().trim().min(3, "Type a vibe before generating.").max(160)
+  trend: z.string().trim().min(3, "Type a trend before generating.").max(160)
 });
 
 type GeneratePayload = {
   storefrontId: string;
   title: string;
-  vibe: string;
+  trend: string;
   products: ReturnType<typeof responseProduct>[];
-  search: Awaited<ReturnType<typeof searchProductsByVibe>>["metadata"];
+  search: Awaited<ReturnType<typeof searchProductsByTrend>>["metadata"];
   previewUrl: string;
   status: "draft";
 };
@@ -76,18 +76,18 @@ function slugify(value: string) {
     .slice(0, 58)
     .replace(/-+$/g, "");
 
-  return slug || "vibe-mall-storefront";
+  return slug || "trend-mall-storefront";
 }
 
-function fallbackTitle(vibe: string) {
-  const titleWords = vibe
+function fallbackTitle(trend: string) {
+  const titleWords = trend
     .split(/\s+/)
     .filter(Boolean)
     .slice(0, 5)
     .map((word) => `${word.charAt(0).toUpperCase()}${word.slice(1).toLowerCase()}`)
     .join(" ");
 
-  return `${titleWords || "Vibe Mall"} Shelf`;
+  return `${titleWords || "Trend Mall"} Shelf`;
 }
 
 function productIdFromResult(product: ProductSearchResult) {
@@ -144,25 +144,25 @@ async function runGenerationWorkflow({
   emitCode,
   request,
   user,
-  vibe
+  trend
 }: {
   emit: ProgressEmitter;
   emitCode?: CodeEmitter;
   request: Request;
   user: NonNullable<Awaited<ReturnType<typeof getCurrentUserFromRequest>>>;
-  vibe: string;
+  trend: string;
 }): Promise<GeneratePayload> {
   console.info("[generate] starting storefront generation", {
     userId: user._id,
-    vibeLength: vibe.length
+    trendLength: trend.length
   });
 
-  emit(0, `Searching the catalog for "${vibe}".`);
+  emit(0, `Searching the catalog for "${trend}".`);
 
-  let search: Awaited<ReturnType<typeof searchProductsByVibe>>;
+  let search: Awaited<ReturnType<typeof searchProductsByTrend>>;
 
   try {
-    search = await searchProductsByVibe(vibe, CODEX_PRODUCT_LIMIT);
+    search = await searchProductsByTrend(trend, CODEX_PRODUCT_LIMIT);
   } catch (error) {
     const message = error instanceof Error ? error.message : "Unknown product search error.";
     const errorCode = classifySearchError(error);
@@ -175,7 +175,7 @@ async function runGenerationWorkflow({
     throw routeError(
       errorCode === "mongodb_unavailable"
         ? "MongoDB Atlas is unavailable, so the app could not read product records."
-        : "Atlas Vector Search is unavailable or the product_vibe_autoembed index is not ready.",
+        : "Atlas Vector Search is unavailable or the product_trend_autoembed index is not ready.",
       503,
       errorCode,
       0
@@ -184,7 +184,7 @@ async function runGenerationWorkflow({
 
   if (search.results.length === 0) {
     throw routeError(
-      "Atlas did not return matching products for that vibe. Try a more specific mood, occasion, or product style.",
+      "Atlas did not return matching products for that trend. Try a more specific mood, occasion, or product style.",
       404,
       "no_products",
       1
@@ -203,7 +203,7 @@ async function runGenerationWorkflow({
       search.metadata.usedFallback ? "deterministic fallback search" : "database semantic search"
     }.`
   );
-  emit(2, "Sending the vibe and product JSON to Codex SDK.");
+  emit(2, "Sending the trend and product JSON to Codex SDK.");
 
   let generation;
   let streamedCodeLength = 0;
@@ -218,7 +218,7 @@ async function runGenerationWorkflow({
     generation = await generateStorefrontHtmlWithCodex({
       onCodeDelta: emitCodeDelta,
       onProgress: (message) => emit(2, message),
-      vibe,
+      trend,
       products: search.results
     });
   } catch (error) {
@@ -245,7 +245,7 @@ async function runGenerationWorkflow({
   const validation = validateGeneratedStorefrontHtml({
     html: generation.html,
     products: search.results,
-    fallbackTitle: fallbackTitle(vibe)
+    fallbackTitle: fallbackTitle(trend)
   });
 
   if (!validation.ok) {
@@ -270,7 +270,7 @@ async function runGenerationWorkflow({
     const storefront: Storefront = {
       _id: storefrontId,
       ownerId: new ObjectId(user._id),
-      vibe,
+      trend,
       title,
       slug,
       productIds,
@@ -294,7 +294,7 @@ async function runGenerationWorkflow({
     return {
       storefrontId: storefrontId.toHexString(),
       title,
-      vibe,
+      trend,
       products: search.results.map(responseProduct),
       search: search.metadata,
       previewUrl: `${appBaseUrl(request)}/storefronts/${storefrontId.toHexString()}/embed`,
@@ -319,11 +319,11 @@ async function runGenerationWorkflow({
 function streamGeneration({
   request,
   user,
-  vibe
+  trend
 }: {
   request: Request;
   user: NonNullable<Awaited<ReturnType<typeof getCurrentUserFromRequest>>>;
-  vibe: string;
+  trend: string;
 }) {
   const encoder = new TextEncoder();
 
@@ -352,7 +352,7 @@ function streamGeneration({
             }),
             request,
             user,
-            vibe
+            trend
           });
 
           send("done", payload);
@@ -403,7 +403,7 @@ export async function POST(request: Request) {
   try {
     body = await request.json();
   } catch {
-    return jsonError("Send a JSON body with a vibe to generate.", 400, "invalid_request");
+    return jsonError("Send a JSON body with a trend to generate.", 400, "invalid_request");
   }
 
   const parsed = generateRequestSchema.safeParse(body);
@@ -416,18 +416,18 @@ export async function POST(request: Request) {
     );
   }
 
-  const { vibe } = parsed.data;
+  const { trend } = parsed.data;
 
   try {
     if (wantsProgressStream(request)) {
-      return streamGeneration({ request, user, vibe });
+      return streamGeneration({ request, user, trend });
     }
 
     const payload = await runGenerationWorkflow({
       emit: () => {},
       request,
       user,
-      vibe
+      trend
     });
 
     return NextResponse.json(payload);

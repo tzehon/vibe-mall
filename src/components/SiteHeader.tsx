@@ -8,12 +8,12 @@ export async function SiteHeader() {
 
   return (
     <header className="site-header">
-      <Link className="brand" href="/" aria-label="Vibe Mall home">
+      <Link className="brand" href="/" aria-label="Trend Mall home">
         <span className="brand-mark" aria-hidden="true">
           VM
         </span>
         <span>
-          <strong>Vibe Mall</strong>
+          <strong>Trend Mall</strong>
           <small>Storefronts that code themselves</small>
         </span>
       </Link>

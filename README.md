@@ -1,12 +1,12 @@
-# Vibe Mall
+# Trend Mall
 
-Vibe Mall is a hackathon demo for an eCommerce storefront that codes itself.
+Trend Mall is a hackathon demo for an eCommerce storefront that codes itself.
 
-A merchant types a vibe, the database finds matching products, Codex writes a themed storefront server-side, the app validates the generated HTML, and the merchant publishes a shareable Mall URL.
+A merchant types a trend, the database finds matching products, Codex writes a themed storefront server-side, the app validates the generated HTML, and the merchant publishes a shareable Mall URL.
 
 ## Why It Matters
 
-Major eCommerce platforms need fast, memorable merchandising surfaces without waiting on a full creative and engineering cycle. Vibe Mall shows how a platform could turn customer intent, seasonal moments, social trends, or merchant prompts into safe, shoppable campaign pages backed by real catalog data.
+Major eCommerce platforms need fast, memorable merchandising surfaces without waiting on a full creative and engineering cycle. Trend Mall shows how a platform could turn customer intent, seasonal moments, social trends, or merchant prompts into safe, shoppable campaign pages backed by real catalog data.
 
 ## Architecture
 
@@ -61,17 +61,17 @@ Demo merchants:
 
 ```text
 Primary merchant
-Email: demo@vibemall.local
-Password: vibe-mall-demo
+Email: demo@trendmall.local
+Password: trend-mall-demo
 
 Second merchant
-Email: second@vibemall.local
-Password: vibe-mall-second
+Email: second@trendmall.local
+Password: trend-mall-second
 ```
 
 The seed is idempotent and creates visually reliable products with item-style
 inline SVG data-URI images. After writing products, it creates or verifies the
-`product_vibe_autoembed` Vector Search index and waits until it is queryable.
+`product_trend_autoembed` Vector Search index and waits until it is queryable.
 
 ## Auto-Embedding Index
 
@@ -120,7 +120,7 @@ ownership boundaries:
   generated HTML validation before persistence, and streaming progress events,
   with Codex and MongoDB mocked for deterministic tests.
 - MongoDB Vector Search request shape: product search sends a text query for MongoDB
-  Automated Embedding, uses the `product_vibe_autoembed` index and `voyage-4`,
+  Automated Embedding, uses the `product_trend_autoembed` index and `voyage-4`,
   projects `vectorSearchScore`, and never sends an application-generated
   `queryVector`.
 - Generated HTML safety: validation accepts complete self-contained storefront
@@ -134,7 +134,7 @@ ownership boundaries:
 - Seed and demo metadata: seeded products are deterministic, have unique SKUs,
   include inline SVG data-URI images, cover the required categories, and expose
   rich `searchText` for semantic retrieval. The tests also assert that every
-  suggested sample vibe chip has visibly related seeded product data.
+  suggested sample trend chip has visibly related seeded product data.
 
 Unit tests do not require live MongoDB or live Codex. Live-service validation is a manual demo check once environment variables and MongoDB indexes are configured.
 
@@ -151,8 +151,9 @@ Playwright E2E tests run against a local Next.js dev server on
 
 The seeded demo smoke test automatically skips unless `MONGODB_URI`,
 `MONGODB_DB`, and `AUTH_SECRET` are available through the shell environment or
-`.env.local`. Run `npm run seed` first so the demo user and products exist. The
-test deletes the storefront it creates after the assertions finish.
+`.env.local`. Run `npm run seed` first so products and the Atlas Search index
+exist. The test upserts the two demo merchants before login, then deletes the
+storefront it creates after the assertions finish.
 
 If Playwright browsers have not been installed on the machine yet, run:
 
@@ -193,17 +194,17 @@ Generated HTML is treated as untrusted.
 Reset the demo database before starting from scratch:
 
 ```bash
-npm run teardown -- --confirm reset-vibe-mall
+npm run teardown -- --confirm reset-trend-mall
 ```
 
-This drops only the Vibe Mall app collections in `MONGODB_DB`: `storefronts`,
+This drops only the Trend Mall app collections in `MONGODB_DB`: `storefronts`,
 `products`, `users`, and `sessions`. It also drops the
-`product_vibe_autoembed` Vector Search index when present.
+`product_trend_autoembed` Vector Search index when present.
 
 To keep the Vector Search index and only clear the collections:
 
 ```bash
-npm run teardown -- --confirm reset-vibe-mall --skip-search-index
+npm run teardown -- --confirm reset-trend-mall --skip-search-index
 ```
 
 Then reseed. The seed command will recreate or verify the index:

@@ -7,7 +7,7 @@ import {
   PRODUCT_VECTOR_INDEX_NAME
 } from "./demoMetadata";
 
-describe("searchProductsByVibe runtime behavior", () => {
+describe("searchProductsByTrend runtime behavior", () => {
   afterEach(() => {
     vi.resetModules();
     vi.clearAllMocks();
@@ -22,9 +22,9 @@ describe("searchProductsByVibe runtime behavior", () => {
       toArray: async () => [
         {
           _id: productId,
-          sku: "VM-001",
+          sku: "TM-001",
           name: "Cloud Pop Birthday Hoodie",
-          brand: "Vibe Mall",
+          brand: "Trend Mall",
           category: "apparel",
           price: 42,
           palette: ["#ffccdd"],
@@ -47,8 +47,8 @@ describe("searchProductsByVibe runtime behavior", () => {
       })
     }));
 
-    const { searchProductsByVibe } = await import("./productSearch");
-    const response = await searchProductsByVibe("cute birthday", 1);
+    const { searchProductsByTrend } = await import("./productSearch");
+    const response = await searchProductsByTrend("cute birthday", 1);
 
     expect(aggregate).toHaveBeenCalledWith(
       expect.arrayContaining([
@@ -72,9 +72,9 @@ describe("searchProductsByVibe runtime behavior", () => {
     expect(response.results).toEqual([
       {
         _id: productId.toHexString(),
-        sku: "VM-001",
+        sku: "TM-001",
         name: "Cloud Pop Birthday Hoodie",
-        brand: "Vibe Mall",
+        brand: "Trend Mall",
         category: "apparel",
         price: 42,
         palette: ["#ffccdd"],
@@ -98,9 +98,9 @@ describe("searchProductsByVibe runtime behavior", () => {
               toArray: async () => [
                 {
                   _id: productId,
-                  sku: "VM-002",
+                  sku: "TM-002",
                   name: "Neon Desk Cable Tray",
-                  brand: "Vibe Mall",
+                  brand: "Trend Mall",
                   category: "gadgets",
                   price: 24.5,
                   palette: ["#3157a4"],
@@ -117,8 +117,8 @@ describe("searchProductsByVibe runtime behavior", () => {
       })
     }));
 
-    const { searchProductsByVibe } = await import("./productSearch");
-    const response = await searchProductsByVibe("No wires clean desk refresh", 8);
+    const { searchProductsByTrend } = await import("./productSearch");
+    const response = await searchProductsByTrend("No wires clean desk refresh", 8);
 
     expect(response.metadata.mode).toBe("demo-fallback");
     expect(response.metadata.usedFallback).toBe(true);

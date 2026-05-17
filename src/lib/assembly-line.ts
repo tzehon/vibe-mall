@@ -9,13 +9,13 @@ export const ASSEMBLY_LINE_STEPS: AssemblyLineStep[] = [
     eyebrow: "01",
     title: "Decide what you'd like to sell",
     description:
-      "The vibe becomes a text query. Vector Search handles semantic matching with automated embeddings."
+      "The trend becomes a text query. Vector Search handles semantic matching with automated embeddings."
   },
   {
     eyebrow: "02",
     title: "Codex SDK writes code",
     description:
-      "The server passes the vibe and retrieved product JSON to Codex, then receives one self-contained storefront."
+      "The server passes the trend and retrieved product JSON to Codex, then receives one self-contained storefront."
   },
   {
     eyebrow: "03",

@@ -1,7 +1,7 @@
 import { Db, MongoClient } from "mongodb";
 
 type MongoGlobal = typeof globalThis & {
-  _vibeMallMongoClientPromise?: Promise<MongoClient>;
+  _trendMallMongoClientPromise?: Promise<MongoClient>;
 };
 
 let mongoClientPromise: Promise<MongoClient> | undefined;
@@ -27,8 +27,8 @@ export function getMongoClient() {
   const globalForMongo = globalThis as MongoGlobal;
 
   if (process.env.NODE_ENV === "development") {
-    globalForMongo._vibeMallMongoClientPromise ??= new MongoClient(uri).connect();
-    return globalForMongo._vibeMallMongoClientPromise;
+    globalForMongo._trendMallMongoClientPromise ??= new MongoClient(uri).connect();
+    return globalForMongo._trendMallMongoClientPromise;
   }
 
   mongoClientPromise ??= new MongoClient(uri).connect();

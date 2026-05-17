@@ -23,7 +23,7 @@ describe("GENERATION_TIMELINE_STEPS", () => {
 describe("buildTechnicalMetadata", () => {
   it("formats the demo technical metadata consistently", () => {
     const metadata = buildTechnicalMetadata({
-      vibe: "Pokemon style cute birthday",
+      trend: "Pokemon style cute birthday",
       productCount: 8,
       fallbackUsed: false,
       htmlSafety: "passed"
@@ -53,6 +53,6 @@ describe("getGenerationErrorCopy", () => {
     const copy = getGenerationErrorCopy("atlas_unavailable", "Search failed.");
 
     expect(copy.title).toBe("Atlas search is unavailable");
-    expect(copy.recovery).toContain("product_vibe_autoembed");
+    expect(copy.recovery).toContain("product_trend_autoembed");
   });
 });

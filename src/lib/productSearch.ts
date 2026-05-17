@@ -46,18 +46,18 @@ function normalizeLimit(limit: number) {
   return Math.min(Math.max(Math.trunc(limit), 1), 24);
 }
 
-function normalizeVibe(vibe: string) {
-  const normalized = vibe.trim();
+function normalizeTrend(trend: string) {
+  const normalized = trend.trim();
 
   if (!normalized) {
-    throw new Error("A vibe is required to search products.");
+    throw new Error("A trend is required to search products.");
   }
 
   return normalized;
 }
 
-export function buildProductVectorSearchPipeline(vibe: string, limit = 8): Document[] {
-  const normalizedVibe = normalizeVibe(vibe);
+export function buildProductVectorSearchPipeline(trend: string, limit = 8): Document[] {
+  const normalizedTrend = normalizeTrend(trend);
   const normalizedLimit = normalizeLimit(limit);
 
   return [
@@ -66,7 +66,7 @@ export function buildProductVectorSearchPipeline(vibe: string, limit = 8): Docum
         index: PRODUCT_VECTOR_INDEX_NAME,
         path: PRODUCT_SEARCH_PATH,
         query: {
-          text: normalizedVibe
+          text: normalizedTrend
         },
         model: PRODUCT_AUTO_EMBEDDING_MODEL,
         filter: {
@@ -133,10 +133,10 @@ function scoreFallbackProduct(product: Product, tokens: string[]) {
   return tokens.reduce((score, token) => (haystack.includes(token) ? score + 1 : score), 0);
 }
 
-async function fallbackTextSearch(vibe: string, limit: number): Promise<ProductSearchResponse> {
+async function fallbackTextSearch(trend: string, limit: number): Promise<ProductSearchResponse> {
   const db = await getDb();
   const normalizedLimit = normalizeLimit(limit);
-  const tokens = tokenize(vibe);
+  const tokens = tokenize(trend);
   const products = await db
     .collection<Product>("products")
     .find({ active: true })
@@ -178,19 +178,19 @@ async function fallbackTextSearch(vibe: string, limit: number): Promise<ProductS
   };
 }
 
-export async function searchProductsByVibe(
-  vibe: string,
+export async function searchProductsByTrend(
+  trend: string,
   limit = 8
 ): Promise<ProductSearchResponse> {
-  const normalizedVibe = normalizeVibe(vibe);
+  const normalizedTrend = normalizeTrend(trend);
   const normalizedLimit = normalizeLimit(limit);
 
   if (process.env.CODEX_DEMO_MODE === "true") {
-    return fallbackTextSearch(normalizedVibe, normalizedLimit);
+    return fallbackTextSearch(normalizedTrend, normalizedLimit);
   }
 
   const db = await getDb();
-  const pipeline = buildProductVectorSearchPipeline(normalizedVibe, normalizedLimit);
+  const pipeline = buildProductVectorSearchPipeline(normalizedTrend, normalizedLimit);
   const products = await db.collection<Product>("products").aggregate<Product>(pipeline).toArray();
 
   return {

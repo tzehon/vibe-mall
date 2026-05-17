@@ -8,13 +8,13 @@ export default function HomePage() {
     <main className="page">
       <section className="hero">
         <div className="hero-copy">
-          <p className="eyebrow">Vibe Mall</p>
+          <p className="eyebrow">Trend Mall</p>
           <h1>A storefront that codes itself.</h1>
           <p className="lede hero-lede">
-            Type a vibe. We find the products. Codex writes the storefront.
+            Type a trend. We find the products. Codex writes the storefront.
             Publish it to the Mall.
           </p>
-          <div className="home-signal-strip" aria-label="Why Vibe Mall is useful">
+          <div className="home-signal-strip" aria-label="Why Trend Mall is useful">
             <div>
               <strong>Trend speed</strong>
               <span>Campaign shelves while the moment is hot.</span>
@@ -45,7 +45,7 @@ export default function HomePage() {
           <h2>Retail teams can catch a trend while it is still moving.</h2>
         </div>
         <p>
-          Vibe Mall turns a fuzzy merchandising idea into a reviewable, publishable shopping page:
+          Trend Mall turns a fuzzy merchandising idea into a reviewable, publishable shopping page:
           semantic product retrieval, Codex-generated code, strict sandbox preview, and one-click
           publishing in the same flow.
         </p>

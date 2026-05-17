@@ -6,9 +6,9 @@ import type { ProductSearchResult } from "@/lib/productSearch";
 const products: ProductSearchResult[] = [
   {
     _id: "507f1f77bcf86cd799439011",
-    sku: "VM-001",
+    sku: "TM-001",
     name: "Cloud Pop Birthday Hoodie",
-    brand: "Vibe Mall",
+    brand: "Trend Mall",
     category: "apparel",
     price: 42,
     palette: ["#ffccdd", "#3157a4"],
@@ -19,9 +19,9 @@ const products: ProductSearchResult[] = [
   },
   {
     _id: "507f1f77bcf86cd799439012",
-    sku: "VM-002",
+    sku: "TM-002",
     name: "Party Sparkle Snack Tin",
-    brand: "Vibe Mall",
+    brand: "Trend Mall",
     category: "snacks",
     price: 18.5,
     palette: ["#b7d94f", "#e0523f"],
@@ -44,7 +44,7 @@ describe("generateStorefrontHtmlWithCodex", () => {
 
     const result = await generateStorefrontHtmlWithCodex({
       onCodeDelta: (delta) => streamedChunks.push(delta),
-      vibe: "Pokemon style cute birthday",
+      trend: "Pokemon style cute birthday",
       products
     });
 

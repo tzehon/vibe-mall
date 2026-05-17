@@ -5,7 +5,7 @@ import { SiteHeader } from "@/components/SiteHeader";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Vibe Mall",
+  title: "Trend Mall",
   description: "A storefront that codes itself.",
   icons: {
     icon: "/favicon.svg"

@@ -9,9 +9,9 @@ import { createSignedSessionToken, SESSION_TTL_SECONDS, verifySignedSessionToken
 
 describe("password hashing", () => {
   it("verifies matching PBKDF2 password hashes", () => {
-    const hash = hashPassword("vibe-mall-demo", { salt: "unit-test-salt" });
+    const hash = hashPassword("trend-mall-demo", { salt: "unit-test-salt" });
 
-    expect(verifyPassword("vibe-mall-demo", hash)).toBe(true);
+    expect(verifyPassword("trend-mall-demo", hash)).toBe(true);
     expect(verifyPassword("wrong-password", hash)).toBe(false);
   });
 });

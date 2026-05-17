@@ -9,7 +9,7 @@ const otherOwnerId = new ObjectId("507f1f77bcf86cd799439012");
 
 const ownerUser: AuthUser = {
   _id: ownerId.toHexString(),
-  email: "demo@vibemall.local",
+  email: "demo@trendmall.local",
   name: "Demo Merchant"
 };
 
@@ -17,7 +17,7 @@ function storefront(owner = ownerId): Storefront {
   return {
     _id: new ObjectId("507f1f77bcf86cd799439013"),
     ownerId: owner,
-    vibe: "Pokemon style cute birthday",
+    trend: "Pokemon style cute birthday",
     title: "Birthday Shelf",
     slug: "birthday-shelf",
     productIds: [],

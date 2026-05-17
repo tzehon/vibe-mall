@@ -4,9 +4,9 @@ import type { ProductSearchResult } from "@/lib/productSearch";
 
 const product: ProductSearchResult = {
   _id: "507f1f77bcf86cd799439011",
-  sku: "VM-001",
+  sku: "TM-001",
   name: "Cloud Pop Birthday Hoodie",
-  brand: "Vibe Mall",
+  brand: "Trend Mall",
   category: "apparel",
   price: 42,
   palette: ["#ffccdd", "#3157a4"],
@@ -37,17 +37,17 @@ describe("POST /api/generate", () => {
     vi.doMock("@/lib/auth", () => ({
       getCurrentUserFromRequest: async () => ({
         _id: "507f1f77bcf86cd799439010",
-        email: "demo@vibemall.local",
+        email: "demo@trendmall.local",
         name: "Demo Merchant"
       })
     }));
     vi.doMock("@/lib/productSearch", () => ({
-      searchProductsByVibe: async () => ({
+      searchProductsByTrend: async () => ({
         results: [product],
         metadata: {
           mode: "demo-fallback",
           usedFallback: true,
-          indexName: "product_vibe_autoembed",
+          indexName: "product_trend_autoembed",
           path: "searchText",
           model: "voyage-4",
           reason: "unit test fallback"
@@ -75,7 +75,7 @@ describe("POST /api/generate", () => {
         headers: {
           "content-type": "application/json"
         },
-        body: JSON.stringify({ vibe: "Pokemon style cute birthday" })
+        body: JSON.stringify({ trend: "Pokemon style cute birthday" })
       })
     );
     const body = await response.json();
@@ -98,17 +98,17 @@ describe("POST /api/generate", () => {
     vi.doMock("@/lib/auth", () => ({
       getCurrentUserFromRequest: async () => ({
         _id: "507f1f77bcf86cd799439010",
-        email: "demo@vibemall.local",
+        email: "demo@trendmall.local",
         name: "Demo Merchant"
       })
     }));
     vi.doMock("@/lib/productSearch", () => ({
-      searchProductsByVibe: async () => ({
+      searchProductsByTrend: async () => ({
         results: [product],
         metadata: {
           mode: "atlas-auto-embedding",
           usedFallback: false,
-          indexName: "product_vibe_autoembed",
+          indexName: "product_trend_autoembed",
           path: "searchText",
           model: "voyage-4"
         }
@@ -131,7 +131,7 @@ describe("POST /api/generate", () => {
         headers: {
           "content-type": "application/json"
         },
-        body: JSON.stringify({ vibe: "Pokemon style cute birthday" })
+        body: JSON.stringify({ trend: "Pokemon style cute birthday" })
       })
     );
     const body = await response.json();
@@ -151,17 +151,17 @@ describe("POST /api/generate", () => {
     vi.doMock("@/lib/auth", () => ({
       getCurrentUserFromRequest: async () => ({
         _id: "507f1f77bcf86cd799439010",
-        email: "demo@vibemall.local",
+        email: "demo@trendmall.local",
         name: "Demo Merchant"
       })
     }));
     vi.doMock("@/lib/productSearch", () => ({
-      searchProductsByVibe: async () => ({
+      searchProductsByTrend: async () => ({
         results: [product],
         metadata: {
           mode: "atlas-auto-embedding",
           usedFallback: false,
-          indexName: "product_vibe_autoembed",
+          indexName: "product_trend_autoembed",
           path: "searchText",
           model: "voyage-4",
           reason: "unit test fallback"
@@ -184,7 +184,7 @@ describe("POST /api/generate", () => {
           accept: "text/event-stream",
           "content-type": "application/json"
         },
-        body: JSON.stringify({ vibe: "Pokemon style cute birthday" })
+        body: JSON.stringify({ trend: "Pokemon style cute birthday" })
       })
     );
     const streamText = await response.text();

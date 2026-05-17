@@ -7,7 +7,7 @@ export default function StorefrontNotFound() {
         <p className="eyebrow">Storefront unavailable</p>
         <h1>This storefront is not public.</h1>
         <p className="lede">
-          Published Vibe Mall shelves are public. Drafts stay private to the
+          Published Trend Mall shelves are public. Drafts stay private to the
           merchant who created them.
         </p>
         <div className="button-row">

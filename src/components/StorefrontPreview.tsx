@@ -9,7 +9,7 @@ export function StorefrontPreview() {
       </div>
       <div className="preview-hero">
         <div>
-          <p className="preview-kicker">Vibe prompt</p>
+          <p className="preview-kicker">Trend prompt</p>
           <h2>Quiet luxury airport essentials</h2>
         </div>
         <span className="preview-status">Ready to publish</span>
