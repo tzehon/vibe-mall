@@ -330,10 +330,29 @@ function streamGeneration({
   return new Response(
     new ReadableStream({
       async start(controller) {
+        let streamClosed = false;
+
+        request.signal.addEventListener("abort", () => {
+          streamClosed = true;
+        });
+
         function send(event: string, data: unknown) {
-          controller.enqueue(
-            encoder.encode(`event: ${event}\ndata: ${JSON.stringify(data)}\n\n`)
-          );
+          if (streamClosed) {
+            return;
+          }
+
+          try {
+            controller.enqueue(
+              encoder.encode(`event: ${event}\ndata: ${JSON.stringify(data)}\n\n`)
+            );
+          } catch (error) {
+            if (error instanceof TypeError) {
+              streamClosed = true;
+              return;
+            }
+
+            throw error;
+          }
         }
 
         try {
@@ -368,7 +387,10 @@ function streamGeneration({
             step: routeFailure.step
           });
         } finally {
-          controller.close();
+          if (!streamClosed) {
+            streamClosed = true;
+            controller.close();
+          }
         }
       }
     }),

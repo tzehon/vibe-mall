@@ -2,7 +2,7 @@
 
 import type { FormEvent } from "react";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 
 import {
   DEMO_SAMPLE_TRENDS,
@@ -116,6 +116,18 @@ const WAITING_CODE_ASCII_FRAMES = [
 |  / \___\_________/____\______/____ |
 +------------------------------------+`
 ] as const;
+
+function subscribeToHydration() {
+  return () => {};
+}
+
+function getClientHydrationSnapshot() {
+  return true;
+}
+
+function getServerHydrationSnapshot() {
+  return false;
+}
 
 function endlessRunnerFrame(frameIndex: number) {
   const score = String((frameIndex + 1) * 37).padStart(6, "0");
@@ -323,6 +335,11 @@ function ProductRetrievalCards({
 }
 
 export function CreateStorefrontClient() {
+  const isClientReady = useSyncExternalStore(
+    subscribeToHydration,
+    getClientHydrationSnapshot,
+    getServerHydrationSnapshot
+  );
   const [trend, setTrend] = useState<string>("");
   const [result, setResult] = useState<GenerateResponse | null>(null);
   const [error, setError] = useState<GenerateErrorPayload | null>(null);
@@ -465,6 +482,7 @@ export function CreateStorefrontClient() {
               <input
                 autoFocus
                 id="trend"
+                disabled={!isClientReady}
                 maxLength={160}
                 name="trend"
                 onChange={(event) => updateTrend(event.target.value)}
@@ -479,6 +497,7 @@ export function CreateStorefrontClient() {
                 {DEMO_SAMPLE_TRENDS.map((sample) => (
                   <button
                     className="chip chip-button"
+                    disabled={!isClientReady}
                     key={sample}
                     onClick={() => updateTrend(sample)}
                     type="button"
@@ -488,7 +507,11 @@ export function CreateStorefrontClient() {
                 ))}
               </div>
             </div>
-            <button className="button primary generate-button" disabled={isGenerating} type="submit">
+            <button
+              className="button primary generate-button"
+              disabled={!isClientReady || isGenerating}
+              type="submit"
+            >
               {isGenerating ? "Assembly line running" : "Generate with Codex"}
             </button>
           </form>

@@ -10,7 +10,7 @@ export async function SiteHeader() {
     <header className="site-header">
       <Link className="brand" href="/" aria-label="Trend Mall home">
         <span className="brand-mark" aria-hidden="true">
-          VM
+          TM
         </span>
         <span>
           <strong>Trend Mall</strong>

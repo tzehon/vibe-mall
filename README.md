@@ -139,7 +139,10 @@ ownership boundaries:
 Unit tests do not require live MongoDB or live Codex. Live-service validation is a manual demo check once environment variables and MongoDB indexes are configured.
 
 Playwright E2E tests run against a local Next.js dev server on
-`localhost:3100` by default:
+`localhost:3100` by default. The Playwright-owned server uses
+`npm run dev:e2e`, which starts Next.js with webpack and forces
+`CODEX_DEMO_MODE=true` for deterministic browser smoke tests while leaving the
+normal `npm run dev` workflow unchanged:
 
 - The always-on browser test opens `/create` as an unauthenticated visitor and
   verifies the app redirects to `/login?next=/create&message=auth_required`,

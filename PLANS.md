@@ -230,6 +230,8 @@ http://localhost:3000
 - Source-boundary tests ensure the Codex SDK import stays server-side, client components do not read secrets, React does not use `dangerouslySetInnerHTML`, and iframe sandbox attributes remain restrictive.
 - Playwright smoke tests cover login, generation, sandboxed iframe preview, publish, and anonymous public share viewing.
 - The Playwright seeded smoke test now upserts the two demo merchants before login so a reset users collection does not break the browser flow, while still requiring seeded products and the Atlas Search index.
+- The Playwright web server now uses `npm run dev:e2e`, a webpack-backed Next.js dev server that forces `CODEX_DEMO_MODE=true`, to avoid noisy Turbopack panic logs and live Codex timeouts during E2E runs.
+- The create form disables trend controls until client hydration completes so browser tests and users cannot trigger a native pre-hydration GET submit instead of the React generation handler.
 
 ## Latest Validation Summary
 
@@ -237,7 +239,7 @@ http://localhost:3000
 - `npm test`: passed with 14 test files and 58 tests.
 - `npm run lint`: passed.
 - `npm run build`: passed with Next.js production compile and 10 static pages generated.
-- `npm run test:e2e`: passed with 2 Playwright tests.
+- `npm run test:e2e`: passed with 2 Playwright tests after moving the Playwright web server to the webpack-backed `dev:e2e` script and adding the create-form hydration guard. No Turbopack panic output appeared in the passing rerun.
 - Terminology scan: no tracked app, test, docs, public, README, plan, package, or agent files still contain the previous product term.
 - `npm run seed`: not rerun in this pass.
 
@@ -264,3 +266,4 @@ http://localhost:3000
 - Keep E2E demo-user hardening in the tracked Trend Mall spec so Playwright only runs the current storefront flow.
 - Keep multiple seeded merchant accounts visible on the login page for ownership demos.
 - Run Playwright against a controlled local Next dev server on `localhost:3100` with `CODEX_DEMO_MODE=true`.
+- Keep E2E on `next dev --webpack` until Turbopack no longer panics on the dynamic storefront route in this demo setup.

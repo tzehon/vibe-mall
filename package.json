@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "next dev",
+    "dev:e2e": "tsx src/scripts/dev-e2e.ts",
     "build": "next build",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",

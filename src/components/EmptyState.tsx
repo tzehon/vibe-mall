@@ -8,7 +8,7 @@ export function EmptyState({ title, description, action }: EmptyStateProps) {
   return (
     <div className="empty-state">
       <div aria-hidden="true" className="empty-state-mark">
-        VM
+        TM
       </div>
       <div>
         <h2>{title}</h2>

@@ -24,7 +24,7 @@ export default defineConfig({
   webServer: process.env.PLAYWRIGHT_BASE_URL
     ? undefined
     : {
-        command: `npm run dev -- --hostname ${host} --port ${port}`,
+        command: `npm run dev:e2e -- --hostname ${host} --port ${port}`,
         env: {
           CODEX_DEMO_MODE: "true",
           NEXT_PUBLIC_APP_URL: baseURL
