@@ -9,10 +9,9 @@ Vibe Mall lets a logged-in shopper type a vibe, retrieves matching products from
 ## Current Status
 
 - Milestones 1 through 8 are complete.
-- Next step: record the 5-minute demo using `docs/video-script.md` and `docs/demo-checklist.md`.
 - The app root is `/Users/tth/projects/vibe-mall`; do not create a nested project directory.
 - The app uses Next.js App Router, TypeScript, MongoDB Node driver, simple credentials auth, Vitest, and Playwright.
-- Codex generation, draft iframe preview, publishing, public share URLs, demo-polish UI, hardening tests, browser smoke tests, and final demo communication docs are implemented.
+- Codex generation, draft iframe preview, publishing, public share URLs, demo-polish UI, hardening tests, and browser smoke tests are implemented.
 
 ## Core Requirements
 
@@ -49,7 +48,6 @@ Vibe Mall lets a logged-in shopper type a vibe, retrieves matching products from
 - UI components: `src/components/CreateStorefrontClient.tsx`, `src/components/StorefrontPreview.tsx`, `src/components/PublishStorefrontPanel.tsx`, `src/components/SiteHeader.tsx`.
 - Core libraries: `src/lib/auth.ts`, `src/lib/session.ts`, `src/lib/productSearch.ts`, `src/lib/storefronts.ts`, `src/lib/htmlSafety.ts`, `src/lib/codex/generateStorefrontHtml.ts`, `src/lib/codex/prompt.ts`.
 - Seed and Atlas scripts: `src/scripts/seed.ts`, `src/scripts/create-atlas-vector-index.ts`, `src/scripts/teardown.ts`.
-- Docs: `README.md`, `docs/atlas-auto-embedding.md`, `docs/video-script.md`, `docs/demo-checklist.md`.
 - E2E: `e2e/vibe-mall.spec.ts`.
 
 ## Data Model
@@ -174,7 +172,7 @@ ATLAS_SEARCH_INDEX_NAME=products_voyage4_autoembed
 - Storefront previews use an iframe with a restrictive `sandbox` attribute and no same-origin privilege.
 - Publishing preserves the stable slug and returns both public detail and direct embed URLs.
 - The create page streams server-side search, Codex, validation, save, and generated code events over SSE.
-- The home, create, mall, and storefront detail pages have been polished for a short recorded demo.
+- The home, create, mall, and storefront detail pages have been polished.
 - Playwright covers unauthenticated `/create` redirects and a seeded demo login/generate/sandbox/publish/public-share flow when env is available.
 
 ## Commands
