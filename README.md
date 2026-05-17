@@ -79,7 +79,7 @@ inline SVG data-URI images. After writing products, it creates or verifies the
 It uses the MongoDB Node driver `createSearchIndex()` helper, then polls
 `listSearchIndexes()` until the index is queryable.
 
-The app sends text queries to MongoDB with `$vectorSearch`. It does not generate embeddings and does not call Voyage directly.
+When `CODEX_DEMO_MODE` is not `true`, the app sends text queries to MongoDB with `$vectorSearch`. Vector embeddings are generated automatically. When `CODEX_DEMO_MODE=true`, product retrieval intentionally bypasses Atlas Vector Search and uses deterministic MongoDB text/tag fallback search while still using MongoDB persistence.
 
 ## Run Locally
 
@@ -93,11 +93,11 @@ Recommended demo path:
 
 1. Log in as the demo merchant.
 2. Open `/create`.
-3. Use `Pokemon style cute birthday`.
+3. Use `No wires clean desk refresh`.
 4. Generate the storefront and watch the Codex source stream.
 5. Review retrieved products and the sandboxed generated storefront preview.
 6. Publish to the Mall; the sandboxed embed opens in a new tab.
-7. Return to the details page to copy or reopen the published storefront link.
+7. Visit the Mall tab to view published and draft storefronts.
 
 ## Tests
 
@@ -164,14 +164,7 @@ npx playwright install chromium
 
 `POST /api/generate` runs in the Node.js runtime. It requires auth, searches products, calls `@openai/codex-sdk` server-side, streams generated code chunks to the Create page, validates the returned HTML document, saves a draft storefront, and returns a preview URL. The app depends directly on the Codex SDK only; it does not call a Codex CLI binary or shell out from application code.
 
-When `CODEX_DEMO_MODE=true`, the route uses deterministic local HTML generation for tests and emergency demos. When `CODEX_DEMO_MODE` is not `true`, `OPENAI_API_KEY` is required and the running app calls the real Codex SDK.
-
-For recording-friendly live Codex runs, set `CODEX_REASONING_EFFORT=none`. If
-the variable is omitted or invalid, the app falls back to `low`. The app sends a
-compact product payload and limits the Codex input to four retrieved products.
-Supported values for the current `gpt-5.5` configuration are `none`, `low`,
-`medium`, `high`, and `xhigh`. You can optionally set `CODEX_MODEL` to override
-the SDK default model.
+When `CODEX_DEMO_MODE=true`, the route uses deterministic local HTML generation and deterministic MongoDB text/tag product search for tests and emergency demos. This bypasses both live Codex and Atlas Vector Search, but still uses MongoDB for users, products, and storefront persistence. When `CODEX_DEMO_MODE` is not `true`, `OPENAI_API_KEY` is required and the running app calls the real Codex SDK.
 
 ## Generated HTML Security
 
@@ -183,23 +176,12 @@ Generated HTML is treated as untrusted.
 - Embed responses set a strict Content Security Policy including `default-src 'none'`, `script-src 'none'`, `connect-src 'none'`, `form-action 'none'`, and `frame-ancestors 'self'`.
 - Draft embeds are owner-only and `no-store`; published embeds are public and cacheable.
 
-## Demo Mode
-
-For deterministic local demos without Codex:
-
-```bash
-CODEX_DEMO_MODE=true
-```
-
-This still uses MongoDB for users, products, and storefronts. Product search falls back to deterministic text/tag matching and the UI labels fallback mode clearly.
-
 ## Rubric Checklist
 
 - Login and authorization.
 - Data persistence.
 - Product semantic search through Vector Search.
 - Automated Embedding with `autoEmbed` and `voyage-4`.
-- No app-generated embeddings.
 - Server-side Codex SDK call inside the running app.
 - Generated storefront HTML validation.
 - Sandboxed iframe rendering only.
