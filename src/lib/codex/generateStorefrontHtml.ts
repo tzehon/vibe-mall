@@ -17,7 +17,13 @@ export type GenerateStorefrontResult = {
   rawSummary: string;
 };
 
-const CODEX_REASONING_EFFORT_VALUES = ["none", "low", "medium", "high", "xhigh"] as const;
+const CODEX_REASONING_EFFORT_VALUES = [
+  "minimal",
+  "low",
+  "medium",
+  "high",
+  "xhigh"
+] as const satisfies readonly ModelReasoningEffort[];
 type CodexRuntimeReasoningEffort = (typeof CODEX_REASONING_EFFORT_VALUES)[number];
 
 function isCodexRuntimeReasoningEffort(value: string): value is CodexRuntimeReasoningEffort {
@@ -679,8 +685,7 @@ export async function generateStorefrontHtmlWithCodex({
   const thread = codex.startThread({
     approvalPolicy: "never",
     model: codexModel(),
-    // The SDK type can lag the API; gpt-5.5 accepts "none".
-    modelReasoningEffort: codexReasoningEffort() as ModelReasoningEffort,
+    modelReasoningEffort: codexReasoningEffort(),
     networkAccessEnabled: false,
     sandboxMode: "read-only",
     skipGitRepoCheck: true,
